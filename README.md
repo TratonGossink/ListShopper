@@ -75,7 +75,7 @@ This project is open-source and available under the **MIT License**.
 ## 📬 Contact
 🚀 Created by **Traton Gossink**  
 📧 Email: traton.gossink@gmail.com  
-🌍 LinkedIn: https://linkedin.com/in/traton-gossink
+🌍 LinkedIn: https://linkedin.com/in/traton-gossink    
 🌍 Portfolio: https://tratongossink.com
 
 ---
