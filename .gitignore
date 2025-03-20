@@ -1,0 +1,41 @@
+# Xcode files
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj/project.xcworkspace
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+DerivedData/
+.DS_Store
+.build/
+
+# Swift Package Manager
+Packages/
+Package.pins
+*.swiftpm
+/Package.resolved
+
+#Carthage
+Carthage/Build
+
+#Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/Screenshots
+fastlane/test_output
+
+#Build and Intermediate files
+build/
+*.app
+*.ipa
+*.dSYM
+
+# Firebase/Google Services (if applicable)
+GoogleService-Info.plist
+
+# Logs and caches
+*.log
+*.lock
+
+# Environment files (if using API keys)
+.env
+
