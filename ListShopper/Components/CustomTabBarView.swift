@@ -6,15 +6,23 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct CustomTabBarView: View {
     
     @State private var userId: String = ""
-    @StateObject var homeViewModel = HomeViewModel(userId: userId)
+    @State private var items: [ListItem] = []
+    @StateObject var homeViewModel: HomeViewModel
+    
+    init(items: [ListItem], userId: String) {
+        _homeViewModel = StateObject(wrappedValue: HomeViewModel(userId: userId))
+    }
     
     var body: some View {
         
-        if homeViewModel.isSignedIn, !homeViewModel.currentUserId.isEmpty{
+  
+        
+        if homeViewModel.isSignedIn, homeViewModel.currentUserId.isEmpty{
                 accountView
             } else {
                 LogInView()
@@ -24,7 +32,7 @@ struct CustomTabBarView: View {
     @ViewBuilder
     var accountView: some View {
         TabView {
-            HomeView()
+            HomeView(items: items)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
@@ -41,5 +49,5 @@ struct CustomTabBarView: View {
 }
 
 #Preview {
-    CustomTabBarView()
+    CustomTabBarView(items: [], userId: "Example")
 }

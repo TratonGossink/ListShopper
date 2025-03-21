@@ -10,15 +10,36 @@ import FirebaseFirestore
 
 struct HomeView: View {
     
-    @FirestoreQuery var items: [ListItem]
-    @StateObject private var homeViewModel = HomeViewModel(userId: <#String#>)
+    @FirestoreQuery(collectionPath: "listItems") var items: [ListItem]
+    @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var listItemViewModel = ListItemViewModel()
+    @State private var editPresented = false
+    @State private var selectedItem: ListItem?
     
     var body: some View {
         NavigationStack {
             VStack {
-                List(items) { item in
-                    ListItemView(item: items)
-                    
+                List {
+                    ForEach(items) { item in
+                        ListItemView(listItem: item)
+                            .swipeActions {
+                                Button("Delete") {
+                                    homeViewModel.deleteItem(id: item.id)
+                                }
+                                .tint(.red)
+                                Button("Edit") {
+                                    selectedItem = item
+                                    editPresented = true
+                                }
+                                .tint(.gray)
+                            }
+                            .sheet(isPresented: $editPresented) {
+                                //                            EditItemView(editItemPresented: true, listItem: $selectedItem)
+                                if let itemToEdit = selectedItem {
+                                    EditItemView(item: itemToEdit)
+                                }
+                            }
+                    }
                 }
             }
         }

@@ -16,7 +16,11 @@ class ListItemViewModel: ObservableObject {
     @Published var showAlert: Bool = false
     @Published var isSheetPresented: Bool = false
     
-    init() {
+    init(listItem: ListItem? = nil) {
+        if let listItem = listItem {
+            self.title = listItem.title
+            self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
+        }
     }
     
     func save() {

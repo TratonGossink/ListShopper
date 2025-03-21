@@ -9,10 +9,14 @@ import SwiftUI
 
 struct ListItemView: View {
     
-    @ObservedObject var viewModel: ListItemViewModel
+    @ObservedObject var listItemViewModel: ListItemViewModel
     @Environment(\.dismiss) var dismiss
     @State var listItem: ListItem
     @State var isEditingName: Bool = false
+    
+    init(listItem: ListItem) {
+        self.listItem = listItem
+    }
     
     var body: some View {
         VStack {
@@ -31,9 +35,9 @@ struct ListItemView: View {
             }
             
             Form {
-                TextField("Title", text: $viewModel.title)
+                TextField("Title", text: $listItemViewModel.title)
                 
-                DatePicker("Due Date", selection: $viewModel.dueDate)
+                DatePicker("Due Date", selection: $listItemViewModel.dueDate)
                     .datePickerStyle(GraphicalDatePickerStyle())
             }
             .scrollContentBackground(.hidden)
@@ -41,24 +45,22 @@ struct ListItemView: View {
             .cornerRadius(8)
             .padding()
             CustomButton(title: "Save", backgroundColor: .blue, textColor: .white) {
-                if viewModel.canSave {
-                    viewModel.save()
+                if listItemViewModel.canSave {
+                    listItemViewModel.save()
                     dismiss()
                 } else {
-                    viewModel.showAlert = true
+                    listItemViewModel.showAlert = true
                 }
             }
             .padding(.bottom, 35)
         }
-        .alert(isPresented: $viewModel.showAlert) {
+        .alert(isPresented: $listItemViewModel.showAlert) {
             .init(title: Text("Error"),
                   message: Text("Please enter a title and due date."))
         }
-        
-        
     }
 }
 
 #Preview {
-    ListItemView()
+    ListItemView(listItemViewModel: ListItemViewModel(), listItem: ListItem(from: "sample" as! Decoder))
 }
