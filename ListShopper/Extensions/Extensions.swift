@@ -19,6 +19,17 @@ extension Encodable {
             return [:]
         }
     }
+}
+//    extension Encodable {
+//        func asDictionary() throws -> [String: Any] {
+//            let data = try JSONEncoder().encode(self)
+//            let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+//            guard let dictionary = json as? [String: Any] else {
+//                throw NSError(domain: "asDictionary", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert JSON to dictionary"])
+//            }
+//            return dictionary
+//        }
+//    }
     
 //    extension TabBarView {
 //        func CustomTabItem(imageName: String, title: String, isActive: Bool) -> some View{
@@ -34,4 +45,3 @@ extension Encodable {
 //        }
 //    }
     
-}
