@@ -11,10 +11,15 @@ import FirebaseFirestore
 struct HomeView: View {
     
     @FirestoreQuery(collectionPath: "listItems") var items: [ListItem]
-    @StateObject private var homeViewModel = HomeViewModel()
+//    @StateObject private var homeViewModel = HomeViewModel(userId: "userId")
+    @StateObject var homeViewModel: HomeViewModel
     @StateObject private var listItemViewModel = ListItemViewModel()
     @State private var editPresented = false
     @State private var selectedItem: ListItem?
+    
+    init(items: [ListItem], userId: String) {
+        _homeViewModel = StateObject(wrappedValue: HomeViewModel(userId: userId))
+    }
     
     var body: some View {
         NavigationStack {
@@ -36,7 +41,7 @@ struct HomeView: View {
                             .sheet(isPresented: $editPresented) {
                                 //                            EditItemView(editItemPresented: true, listItem: $selectedItem)
                                 if let itemToEdit = selectedItem {
-                                    EditItemView(item: itemToEdit)
+                                    
                                 }
                             }
                     }
@@ -47,5 +52,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    var selectedItem = [ListItem]()
+    HomeView(items: selectedItem, userId: "sample")
 }

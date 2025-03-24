@@ -12,11 +12,22 @@ import FirebaseFirestore
 class HomeViewModel: ObservableObject {
     
     @Published var showingNewItemView = false
+    @Published var currentUserId: String = ""
+    private var handler: AuthStateDidChangeListenerHandle?
     
-    private let userId: String
+    private var userId: String
     
     init (userId: String) {
         self.userId = userId
+        
+        self.handler = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            DispatchQueue.main.async {
+                self?.currentUserId = user?.uid ?? ""
+                if let uid = user?.uid {
+                    self?.userId = uid
+                }
+            }
+        }
     }
     
     func deleteItem(id: ListItem.ID) {
@@ -34,6 +45,10 @@ class HomeViewModel: ObservableObject {
                     print( "Item successfully deleted")
                 }
             }
+    }
+    
+    public var isSignedIn: Bool {
+        return Auth.auth().currentUser != nil
     }
 }
 

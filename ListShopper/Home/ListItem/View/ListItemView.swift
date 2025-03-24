@@ -11,13 +11,14 @@ struct ListItemView: View {
     
     @ObservedObject var listItemViewModel: ListItemViewModel
     @Environment(\.dismiss) var dismiss
-    @State var listItem: ListItem
+    var listItem: ListItem
     @State var isEditingName: Bool = false
     
     init(listItem: ListItem) {
         self.listItem = listItem
+        self._listItemViewModel = ObservedObject(initialValue: ListItemViewModel(listItem: listItem))
     }
-    
+
     var body: some View {
         VStack {
                 Capsule()
@@ -62,5 +63,9 @@ struct ListItemView: View {
 }
 
 #Preview {
-    ListItemView(listItemViewModel: ListItemViewModel(), listItem: ListItem(from: "sample" as! Decoder))
+    let dueDate = Date().timeIntervalSince1970
+    let title = "Test Item"
+    let createdDate = Date().timeIntervalSinceReferenceDate
+    let isComplete = false
+    ListItemView(listItem: ListItem(title: title, dueDate: dueDate, createdDate: createdDate, isComplete: isComplete))
 }

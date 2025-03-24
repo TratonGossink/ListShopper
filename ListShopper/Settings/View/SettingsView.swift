@@ -14,10 +14,11 @@ struct SettingsView: View {
     @State private var isLoggedIn: Bool = true
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Toggle("Dark Mode", isOn: $settingsViewModel.isDarkMode)
             }
+            
             .navigationTitle("Settings")
         }
     }
