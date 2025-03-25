@@ -16,6 +16,10 @@ struct HomeView: View {
     @State private var editPresented = false
     @State private var selectedItem: ListItem?
     
+    init(userId: String? = nil) {
+        _homeViewModel = StateObject(wrappedValue: HomeViewModel(userId: userId!))
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {

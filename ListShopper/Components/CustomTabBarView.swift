@@ -19,9 +19,6 @@ struct CustomTabBarView: View {
     }
     
     var body: some View {
-        
-  
-        
         if homeViewModel.isSignedIn, homeViewModel.currentUserId.isEmpty{
                 accountView
             } else {
@@ -32,7 +29,7 @@ struct CustomTabBarView: View {
     @ViewBuilder
     var accountView: some View {
         TabView {
-            HomeView(items: items)
+            HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
