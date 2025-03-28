@@ -9,13 +9,14 @@ import SwiftUI
 
 struct ListItemView: View {
     
-    @ObservedObject var listItemViewModel: ListItemViewModel
+    @StateObject var listItemViewModel: ListItemViewModel
     @Environment(\.dismiss) var dismiss
-    @State var listItem: ListItem
+    var listItem: ListItem
     @State var isEditingName: Bool = false
     
     init(listItem: ListItem) {
         self.listItem = listItem
+        _listItemViewModel = StateObject(wrappedValue: ListItemViewModel(listItem: listItem))
     }
     
     var body: some View {
@@ -61,6 +62,6 @@ struct ListItemView: View {
     }
 }
 
-#Preview {
-    ListItemView(listItemViewModel: ListItemViewModel(), listItem: ListItem(from: "sample" as! Decoder))
-}
+//#Preview {
+//    ListItemView(listItem: ListItem(from: "sample" as! Decoder))
+//}

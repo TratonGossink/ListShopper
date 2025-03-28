@@ -16,10 +16,15 @@ class ListItemViewModel: ObservableObject {
     @Published var showAlert: Bool = false
     @Published var isSheetPresented: Bool = false
     
+    var id: String
+    
     init(listItem: ListItem? = nil) {
         if let listItem = listItem {
             self.title = listItem.title
             self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
+            self.id = listItem.id
+        } else {
+            self.id = UUID().uuidString
         }
     }
     
@@ -40,8 +45,7 @@ class ListItemViewModel: ObservableObject {
             createdDate: Date().timeIntervalSince1970,
             isComplete: false)
         
-        do {
-            let data = try itemData.asDictionary()
+            let data = itemData.asDictionary()
             db.collection("users")
                 .document(userID)
                 .collection("lists")
@@ -52,10 +56,32 @@ class ListItemViewModel: ObservableObject {
                         self.showAlert = true
                     }
                 }
-        } catch {
             print(#function, "Could not convert to dictionary")
         }
+
+    func deleteItem() {
+        let db = Firestore.firestore()
+        
+        guard let userId = Auth.auth().currentUser?.uid else {
+                 print(#function, "Could not get user ID")
+                 return
+             }
+        
+        db.collection("users")
+            .document(userId)
+            .collection("lists")
+            .document(id)
+            .delete() {
+                error in
+                if let error = error {
+                    print("Error deleting document: \(error.localizedDescription)")
+                } else {
+                    print( "Item successfully deleted")
+                }
+            }
     }
+    
+    
     var canSave: Bool {
         guard !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             print(#function, "Title must not be empty")
