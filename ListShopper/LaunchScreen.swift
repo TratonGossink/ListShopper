@@ -14,7 +14,7 @@ struct LaunchScreen: View {
     var body: some View {
         ZStack {
             if mainScreen {
-                MainView()
+//                CustomTabBarView()
             } else {
                 Image("logo-screen")
                     .resizable()
