@@ -93,11 +93,11 @@ private func insertUserRecord(id: String) {
     
      func validate() -> Bool {
          var validEntry = true
-//         var errorMessage: [String] = []
-         errorMessage = ""
+         var errorMessage: [String] = []
+//         errorMessage = ""
         
          if name.trimmingCharacters(in: .whitespaces).isEmpty {
-             errorMessage = "Please enter a name"
+//             errorMessage = "Please enter a name"
 //            errorMessage.append("Please enter a name")
             return false
         }
@@ -106,8 +106,8 @@ private func insertUserRecord(id: String) {
 //             errorMessage.append("Please enter a valid email address")
 //             validEntry = false
          } else if !email.contains("@") || !email.contains(".") {
-//             errorMessage.append("Please enter a valid email address")
-//             validEntry = false
+             errorMessage.append("Please enter a valid email address")
+             validEntry = false
          }
         
          if !password.trimmingCharacters(in: .whitespaces).isEmpty {

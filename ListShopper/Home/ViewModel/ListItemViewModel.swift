@@ -11,10 +11,12 @@ import FirebaseAuth
 
 class ListItemViewModel: ObservableObject {
     
+    @Published var itemId: UUID?
     @Published var title: String = ""
     @Published var dueDate: Date = Date()
     @Published var showAlert: Bool = false
     @Published var isSheetPresented: Bool = false
+    @Published var selectedItem: ListItem!
     
     var id: String
     
@@ -31,45 +33,45 @@ class ListItemViewModel: ObservableObject {
     func save() {
         guard self.canSave else { return }
         
-        let db = Firestore.firestore()
-        guard let userID = Auth.auth().currentUser?.uid else {
+        guard let userId = Auth.auth().currentUser?.uid else {
             print(#function, "Could not get user ID")
             return
         }
         
-        let itemId = UUID().uuidString
+        let itemUUID = UUID().uuidString
         let itemData = ListItem(
-            id: itemId,
+            id: userId,
             title: title,
             dueDate: dueDate.timeIntervalSince1970,
             createdDate: Date().timeIntervalSince1970,
             isComplete: false)
         
-            let data = itemData.asDictionary()
-            db.collection("users")
-                .document(userID)
-                .collection("lists")
-                .document(itemId)
-                .setData(data) { error in
+        let db = Firestore.firestore()
+            db.collection("itemList")
+                .document(userId)
+                .collection("listItems")
+                .document(itemUUID)
+                .setData(itemData.asDictionary()) { error in
                     if let error = error {
                         print(#function, "Error saving data: \(error)")
                         self.showAlert = true
                     }
                 }
             print(#function, "Could not convert to dictionary")
+        print("Item as dictionary: \(itemData.asDictionary())")
         }
 
     func deleteItem() {
         let db = Firestore.firestore()
         
-        guard let userId = Auth.auth().currentUser?.uid else {
+        guard let itemId = Auth.auth().currentUser?.uid else {
                  print(#function, "Could not get user ID")
                  return
              }
         
-        db.collection("users")
-            .document(userId)
-            .collection("lists")
+        db.collection("itemList")
+            .document(itemId)
+            .collection("listItems")
             .document(id)
             .delete() {
                 error in
@@ -87,10 +89,15 @@ class ListItemViewModel: ObservableObject {
             print(#function, "Title must not be empty")
             return false }
         
-        guard dueDate > Date() else {
+        guard dueDate > Date().addingTimeInterval(-86400) else {
             print(#function, "Due date must be in the future")
             return false
         }
         return true
+    }
+    
+    func toggleIsComplete(item: ListItem) {
+//        item.toggleComplete(true)
+        
     }
 }
