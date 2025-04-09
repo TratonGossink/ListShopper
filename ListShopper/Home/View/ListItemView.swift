@@ -9,29 +9,24 @@ import SwiftUI
 
 struct ListItemView: View {
     
-    @ObservedObject var listItemViewModel: ListItemViewModel
+    @StateObject var listItemViewModel = ListItemViewModel()
     @Environment(\.dismiss) var dismiss
-    @State var listItem: ListItem
-    @State var isEditingName: Bool = false
-    
-    init(listItem: ListItem) {
-        self.listItem = listItem
-    }
+    @Binding var isSheetPresented: Bool
+//    @State var listItem: ListItem
+    var isEditing: Bool = false
     
     var body: some View {
         VStack {
                 Capsule()
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 50, height: 5)
-                    .padding(.top, 35)
-            if listItem.id != UUID().uuidString {
+                    .padding(.top, 25)
+            if listItemViewModel.id != UUID().uuidString {
                 Text("New Item")
                     .font(.system(size: 32, weight: .bold))
-                    .padding(.top, 40)
             } else {
                 Text("Update Item")
                     .font(.system(size: 32, weight: .bold))
-                    .padding(.top, 40)
             }
             
             Form {
@@ -62,5 +57,5 @@ struct ListItemView: View {
 }
 
 #Preview {
-    ListItemView(listItemViewModel: ListItemViewModel(), listItem: ListItem(from: "sample" as! Decoder))
+    ListItemView(listItemViewModel: ListItemViewModel(), isSheetPresented: .constant(false))
 }

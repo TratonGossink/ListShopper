@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import FirebaseFirestore
 
 struct ListItem: Identifiable, Codable {
     var id: String = UUID().uuidString

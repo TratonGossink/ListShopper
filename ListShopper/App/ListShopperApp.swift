@@ -12,10 +12,12 @@ import FirebaseCore
 struct ListShopperApp: App {
     
     @StateObject private var settingsViewModel = SettingsViewModel()
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
         WindowGroup {
+//            LogInView()
             MainView()
                 .environmentObject(settingsViewModel)
                 .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)

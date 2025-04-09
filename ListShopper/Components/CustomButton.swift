@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct CustomButton: View {
+    
     let title: String
     let backgroundColor: Color
     let textColor: Color
     let action: () -> Void
     
-    
     var body: some View {
         Button {
             action()
             print("Button Pressed")
-                
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
@@ -32,7 +31,6 @@ struct CustomButton: View {
             .frame(maxWidth: .infinity)
         }
         .padding(.bottom, 30)
-        
     }
 }
 

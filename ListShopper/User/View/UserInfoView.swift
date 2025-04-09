@@ -34,6 +34,6 @@ struct UserInfoView: View {
         name: "John Doe",
         email: "john@example.com",
         joined: Date().timeIntervalSince1970,
-        imageURL: nil
+        photo: nil
     ))
 }

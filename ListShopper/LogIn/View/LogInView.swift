@@ -14,7 +14,6 @@ struct LogInView: View {
     var body: some View {
         NavigationView {
             VStack {
-                //Header
                 CustomHeader(title: "List Shopper",
                              subtitle: "Make Shopping Easy",
                              angle: 15,
@@ -24,7 +23,6 @@ struct LogInView: View {
                         Text(logInViewModel.errorMessage)
                             .foregroundColor(.red)
                     }
-                    
                     TextField("Email Address",
                               text: $logInViewModel.email)
                     .textFieldStyle(DefaultTextFieldStyle())
@@ -40,14 +38,13 @@ struct LogInView: View {
                     .keyboardType(.asciiCapable)
                 }
                 .scrollContentBackground(.hidden)
-                
                 CustomButton(title: "Log In",
                              backgroundColor: .blue,
                              textColor: .white) {
                     logInViewModel.logIn()
+                    MainView()
                 }
                              .padding()
-                
                 ///Account creation
                 VStack {
                     Text("New Here?")
