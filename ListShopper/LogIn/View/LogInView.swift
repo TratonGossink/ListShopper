@@ -38,11 +38,11 @@ struct LogInView: View {
                     .keyboardType(.asciiCapable)
                 }
                 .scrollContentBackground(.hidden)
-                
                 CustomButton(title: "Log In",
                              backgroundColor: .blue,
                              textColor: .white) {
                     logInViewModel.logIn()
+                    MainView()
                 }
                              .padding()
                 ///Account creation

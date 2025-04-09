@@ -10,56 +10,53 @@ import FirebaseFirestore
 
 struct ShoppingListView: View {
     
-    @FirestoreQuery var items: [ListItem]
-    @StateObject private var shoppingListViewModel = ShoppingListViewModel()
-    @StateObject var listItemViewModel = ListItemViewModel()
-    @State private var editPresented = false
-    @State private var selectedItem: ListItem?
-    @State private var showAddItemView: Bool = false
     
-    init(userId: String) {
-        self._items = FirestoreQuery(collectionPath: "users/\(userId)/listItems")
-    }
+    //    @ObservedObject var listItemViewModel = ListItemViewModel()
+    @ObservedObject var listItemViewModel = ListItemViewModel()
+    @FirestoreQuery var items: [ListItem]
+    @State private var editPresented = false
+    //    private let userId: String
+    
+    init(itemId: String) {
+        //        self.userId = userId
+        self._items = FirestoreQuery(collectionPath: "itemList/\(itemId)/listItems")
+//    self._listItemViewModel = StateObject(wrappedValue: ListItemViewModel(userId: userId))
+}
     
     var body: some View {
         NavigationStack {
             VStack {
-                List {
-                    ForEach(items) { item in
-                        ListItemView(listItem: item)
-                            .swipeActions {
-                                Button("Delete") {
-                                    deleteItem(item)
-                                }
-                                .tint(.red)
-                                Button("Edit") {
-                                    selectedItem = item
-                                    editPresented = true
-                                }
-                                .tint(.gray)
+                List(items) { item in
+                    ItemRowView(item: item)
+                        .swipeActions {
+                            Button("Delete") {
+                                deleteItem(item)
                             }
-                            .sheet(isPresented: $editPresented) {
-                                if let itemToEdit = selectedItem {
-                                }
+                            .tint(.red)
+                            Button("Edit") {
+                                editItem(item)
                             }
-                    }
-                    .onDelete(perform: deleteItems)
+                            .tint(.gray)
+                        }
+                        .sheet(isPresented: $editPresented) {
+                            ListItemView(isSheetPresented: $listItemViewModel.isSheetPresented)
+                        }
                 }
+                .listStyle(PlainListStyle())
             }
-            .navigationTitle("Your List")
+            .navigationTitle(Text("Shopping List"))
             .toolbar {
                 Button {
-                    showAddItemView = true
+                    listItemViewModel.isSheetPresented = true
                 } label: {
                     Image(systemName: "plus")
                 }
             }
-            .sheet(isPresented: $showAddItemView) {
-                ListItemView(listItem: selectedItem!)
+            .sheet(isPresented: $listItemViewModel.isSheetPresented) {
+                ListItemView(isSheetPresented: $listItemViewModel.isSheetPresented)
             }
         }
     }
-    
     func deleteItems(at offsets: IndexSet) {
         for index in offsets {
             let item = items[index]
@@ -71,8 +68,16 @@ struct ShoppingListView: View {
         let viewModel = ListItemViewModel(listItem: item)
         viewModel.deleteItem()
     }
+    
+    func editItem(_ item: ListItem) {
+        //        let viewModel = ListItemViewModel(listItem: item)
+        //        viewModel.isSheetPresented = true
+        let editSheet = ListItemView(isSheetPresented: $editPresented)
+        editSheet.isSheetPresented = true
+    }
 }
 
+
 #Preview {
-    ShoppingListView(userId: "sampleId")
+    ShoppingListView(itemId: "nrHQT5nXSKUqRbtfZ0xbiJRlg1f2")
 }

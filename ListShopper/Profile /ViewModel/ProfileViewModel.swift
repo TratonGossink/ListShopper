@@ -11,7 +11,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class ProfileViewModel: ObservableObject {
-    @Published var user: User? = nil
+    @Published var user: User?
+    @Published var errorMessage: String = ""
     
     let db  = Firestore.firestore()
     let storage  = Storage.storage().reference()
@@ -21,10 +22,11 @@ class ProfileViewModel: ObservableObject {
     }
     
     func fetchUser() {
-        guard let userId = Auth.auth().currentUser?.uid else { return
-        }
+        guard let userId = Auth.auth().currentUser?.uid else { return }
         
-        db.collection("users").document(userId).getDocument { [weak self] snapshot, error in guard let self = self, let snapshot = snapshot, error == nil
+        db.collection("users")
+            .document(userId)
+            .getDocument { [weak self] snapshot, error in guard let self = self, let snapshot = snapshot, error == nil
             else { return }
             
             if let user = try? snapshot.data(as: User.self) {
@@ -35,11 +37,13 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    func uploadProfileImage(image: UIImage) {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
+    func uploadProfileImage(photo: UIImage) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User not logged in or no user ID found.")
+            return }
+        guard let imageData = photo.jpegData(compressionQuality: 0.4) else { return }
         
-        let profileRef = storage.child("profile_images/\(userId).jpg")
+        let profileRef = storage.child("users/\(userId)/photo")
         
         profileRef.putData(imageData, metadata: nil) { [weak self] _, error in
             guard let self = self else { return }
@@ -54,12 +58,14 @@ class ProfileViewModel: ObservableObject {
                     return
                 }
                 
-                self.db.collection("users").document(userId).updateData(["profileImageURL": downloadURL.absoluteString]) { error in
+                print("Download URL: \(downloadURL.absoluteString)")
+                
+                self.db.collection("users").document(userId).updateData(["photo": downloadURL.absoluteString]) { error in
                     if let error = error {
                         print("Error updating profile image URL: \(error.localizedDescription)")
                     } else {
                         DispatchQueue.main.async {
-                            self.user?.imageURL = downloadURL.absoluteString
+                            self.user?.photo = downloadURL.absoluteString
                         }
                     }
                 }
@@ -76,5 +82,21 @@ class ProfileViewModel: ObservableObject {
         } catch {
             print("Error signing out: \(error)")
         }
+    }
+    
+    
+    static func verifyCode(code: String, completion: @escaping (Error?) -> Void) {
+        
+        let verificationId = UserDefaults.standard.string(forKey: "authverificationID" ) ?? ""
+        
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationId, verificationCode: code)
+        
+        Auth.auth().signIn(with: credential) { authResult, error in
+            
+            DispatchQueue.main.async {
+                completion(error)
+            }
+        }
+        
     }
 }

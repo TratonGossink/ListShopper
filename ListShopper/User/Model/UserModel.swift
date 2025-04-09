@@ -12,5 +12,6 @@ struct User: Codable {
     var name: String
     var email: String
     var joined: TimeInterval
-    var imageURL: String?
+    var photo: String?
 }
+ 
