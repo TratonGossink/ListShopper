@@ -73,6 +73,16 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    func uploadProfilPhoto(user: User) {
+        let db = Firestore.firestore()
+        
+        db.collection("users").document(user.id).updateData(["photo": user.photo]) { error in
+            if let error = error {
+                print("Error updating profile image URL: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func logOut() {
         do {
             try Auth.auth().signOut()
