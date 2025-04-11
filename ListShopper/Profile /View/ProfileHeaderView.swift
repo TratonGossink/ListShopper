@@ -20,16 +20,22 @@ struct ProfileHeaderView: View {
    
     var body: some View {
         ZStack {
-            if selectedImage != nil {
-                Image(uiImage: selectedImage!)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(style: StrokeStyle(lineWidth: 2)))
+//            if selectedImage != nil {
+            if let photoURL = user.photo {
+                AsyncImage(url: URL(string: photoURL)) { image in
+                    //                Image(uiImage: selectedImage!)
+                    image.resizable()
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(style: StrokeStyle(lineWidth: 2)))
+                } placeholder: {
+                    ProgressView()
+                }
             } else {
-                defaultProfileImage
-            }
+                        defaultProfileImage
+                    }
             ///Clickable Camera Icon
             VStack {
                 Spacer()
@@ -82,8 +88,11 @@ struct ProfileHeaderView: View {
         }
         .onChange(of: selectedImage) { image in
             if let image = image {
+                print("Selected image: \(image)")
 //                profileViewModel.uploadProfileImage(photo: image, user: user)
                 profileViewModel.uploadProfilePhoto(photo: image, user: user)
+            } else {
+                print("No image selected.")
             }
         }
     }
