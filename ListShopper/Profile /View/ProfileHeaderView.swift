@@ -82,8 +82,8 @@ struct ProfileHeaderView: View {
         }
         .onChange(of: selectedImage) { image in
             if let image = image {
-//                profileViewModel.uploadProfileImage(photo: image)
-                profileViewModel.uploadProfilPhoto(user: user)
+//                profileViewModel.uploadProfileImage(photo: image, user: user)
+                profileViewModel.uploadProfilePhoto(photo: image, user: user)
             }
         }
     }
