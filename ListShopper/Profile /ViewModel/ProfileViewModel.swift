@@ -97,25 +97,7 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-    
-//    func uploadProfilePhoto(photo: UIImage, user: User) {
-//        let db = Firestore.firestore()
-//        ///Section -Used to check userId is valid and logged in. Converts image data to URL String.
-//        guard let userId = Auth.auth().currentUser?.uid else {
-//            print("User not logged in or no user ID found.")
-//            return }
-//        
-//        guard let imageData = photo.jpegData(compressionQuality: 0.4) else { return }
-//        ///
-//        db.collection("users").document(user.id).updateData(["photo": user.photo]) { error in
-//            if let error = error {
-//                print("Error updating profile image URL: \(error.localizedDescription)")
-//            }
-//        }
-//        print("Image string:\(user.photo)")
-//    }
-    
-    
+
     func uploadProfilePhoto(photo: UIImage, user: User) {
         guard let imageData = photo.jpegData(compressionQuality: 0.4) else {
             print("Failed to convert image to JPEG data")
@@ -150,13 +132,13 @@ class ProfileViewModel: ObservableObject {
     }
 
     
-    func imageCompression(image: UIImage) -> String? {
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else {
-            print("Failed to convert image to JPEG data")
-            return nil }
-        let base64String = imageData.base64EncodedString()
-        return base64String
-    }
+//    func imageCompression(image: UIImage) -> String? {
+//        guard let imageData = image.jpegData(compressionQuality: 0.4) else {
+//            print("Failed to convert image to JPEG data")
+//            return nil }
+//        let base64String = imageData.base64EncodedString()
+//        return base64String
+//    }
     
     func updatePhotoURL(photoURL: String, user: User) {
         let db = Firestore.firestore()
