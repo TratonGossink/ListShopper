@@ -20,10 +20,8 @@ struct ProfileHeaderView: View {
    
     var body: some View {
         ZStack {
-//            if selectedImage != nil {
             if let photoURL = user.photo {
                 AsyncImage(url: URL(string: photoURL)) { image in
-                    //                Image(uiImage: selectedImage!)
                     image.resizable()
                         .resizable()
                         .scaledToFill()
@@ -57,18 +55,16 @@ struct ProfileHeaderView: View {
             }
         }
         .frame(width: 100, height: 100)
-//        .onTapGesture {
-//            showImagePicker = true
-//        }
-        .confirmationDialog("From where?", isPresented: $isSourceMenuShowing) {
+        .onTapGesture {
+            showImagePicker = true
+        }
+        .confirmationDialog("From where?", isPresented: $isSourceMenuShowing, actions: {
             Button {
-                // Set source to photo library
                 self.source = .photoLibrary
                 showImagePicker = true
             } label: {
                 Text("Photo Library")
             }
-            
             if UIImagePickerController.isSourceTypeAvailable(.camera){
                 Button {
                     //Set source to camera
@@ -78,7 +74,7 @@ struct ProfileHeaderView: View {
                     Text("Take Photo")
                 }
             }
-        }
+        })
         
 //        .sheet(isPresented: $showImagePicker) {
 //            ImagePicker(image: $selectedImage)
@@ -89,7 +85,6 @@ struct ProfileHeaderView: View {
         .onChange(of: selectedImage) { image in
             if let image = image {
                 print("Selected image: \(image)")
-//                profileViewModel.uploadProfileImage(photo: image, user: user)
                 profileViewModel.uploadProfilePhoto(photo: image, user: user)
             } else {
                 print("No image selected.")

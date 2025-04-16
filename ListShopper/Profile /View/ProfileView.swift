@@ -18,9 +18,9 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if let user = profileViewModel.user {
-                    ProfileHeaderView(user: user, showImagePicker: $showImagePicker, profileViewModel: ProfileViewModel())
-                    UserInfoView(user: user)
+                if let userInfo = profileViewModel.user {
+                    ProfileHeaderView(user: userInfo, showImagePicker: $showImagePicker, profileViewModel: profileViewModel)
+                    UserInfoView(user: userInfo)
                     Spacer()
                     ProfileButtonsView(showAlert: $showAlert)
                 } else {
