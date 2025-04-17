@@ -45,8 +45,6 @@ class ProfileViewModel: ObservableObject {
         let uniqueId = UUID().uuidString
         let storageRef = Storage.storage().reference().child("photo").child("\(uniqueId).jpg")
         
-//        newPhotoURL(photoURL: uniqueId, user: user)
-        
             storageRef.putData(imageData, metadata: nil) { (metadata, error) in
                 if let error = error {
                     print("Error uploading profile image to Storage: \(error.localizedDescription)")
