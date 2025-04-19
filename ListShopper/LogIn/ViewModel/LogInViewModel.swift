@@ -13,7 +13,6 @@ class LogInViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var errorMessage: String = ""
-//    @Published private var isErrorVisible: Bool = false
     
     init() {}
     
@@ -25,11 +24,10 @@ class LogInViewModel: ObservableObject {
     
     private func validate() -> Bool {
         
-//        errorMessage = ""
+        errorMessage = ""
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
               !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             errorMessage = "Please enter a username and password."
-//            isErrorVisible = true
             return false
         }
         

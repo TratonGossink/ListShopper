@@ -22,17 +22,10 @@ class RegistrationViewModel: ObservableObject {
     
     init() {}
     
-//    func register(completion: @escaping (Bool) -> Void) {
-//        guard validate() else {
-//            completion(false)
-//            return
-//        }
-//        isRegistering = true
-        
-        func register() {
-            guard validate() else {
-                return
-            }
+    func register() {
+        guard validate() else {
+            return
+        }
         
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
@@ -40,8 +33,6 @@ class RegistrationViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.errorMessage = error.localizedDescription
                 }
-//                self?.isRegistering = false
-//                completion(false)
                 return
             }
             guard let userId = result?.user.uid else {
@@ -49,85 +40,72 @@ class RegistrationViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self?.errorMessage = "Failed to create user."
                 }
-//                self?.isRegistering = false
-//                completion(false)
                 return
             }
-//            self?.insertUserRecord(id: userId, completion: completion)
             self?.insertUserRecord(id: userId)
         }
     }
     
-//    private func insertUserRecord(id: String, completion: @escaping (Bool) -> Void) {
-//        let newUser = User(id: id,
-//                           name: name,
-//                           email: email,
-//                           joined: Date().timeIntervalSince1970)
-
-private func insertUserRecord(id: String) {
-    let newUser = User(id: id,
-                       name: name,
-                       email: email,
-                       joined: Date().timeIntervalSince1970)
+    private func insertUserRecord(id: String) {
+        let newUser = User(id: id,
+                           name: name,
+                           email: email,
+                           joined: Date().timeIntervalSince1970)
         
         let db = Firestore.firestore()
-                db.collection("users")
-                .document(id)
-                .setData(newUser.asDictionary()) { [weak self] error in
-                    if let error = error {
-                        DispatchQueue.main.async {
-                            self?.errorMessage = error.localizedDescription
-                            print("Unable to create user.")
-                        }
-//                        self?.isRegistering = false
-//                        completion(false)
-                        return
+        db.collection("users")
+            .document(id)
+            .setData(newUser.asDictionary()) { [weak self] error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        self?.errorMessage = error.localizedDescription
+                        print("Unable to create user.")
                     }
-            DispatchQueue.main.async {
-                self?.errorMessage = "User successfully created!"
+                    return
+                }
+                DispatchQueue.main.async {
+                    self?.errorMessage = "User successfully created!"
+                }
             }
-//                    self?.isRegistering = false
-//                    completion(true)
-        }
     }
     
-     func validate() -> Bool {
-         var validEntry = true
-         var errorMessage: [String] = []
-//         errorMessage = ""
+    func validate() -> Bool {
+        var validEntry = true
+        var errorMessage: [String] = []
+        //         errorMessage = ""
         
-         if name.trimmingCharacters(in: .whitespaces).isEmpty {
-//             errorMessage = "Please enter a name"
-//            errorMessage.append("Please enter a name")
+        if name.trimmingCharacters(in: .whitespaces).isEmpty {
+            //             errorMessage = "Please enter a name"
+            //            errorMessage.append("Please enter a name")
             return false
         }
-
-         if email.trimmingCharacters(in: .whitespaces).isEmpty {
-//             errorMessage.append("Please enter a valid email address")
-//             validEntry = false
-         } else if !email.contains("@") || !email.contains(".") {
-             errorMessage.append("Please enter a valid email address")
-             validEntry = false
-         }
         
-         if !password.trimmingCharacters(in: .whitespaces).isEmpty {
-//             errorMessage.append("Please enter a password")
-//             validEntry = false
-         } else if password.count >= 6 {
-//                 errorMessage.append("Please enter a password")
-//                 validEntry = false
+        if email.trimmingCharacters(in: .whitespaces).isEmpty {
+            //             errorMessage.append("Please enter a valid email address")
+            //             validEntry = false
+        } else if !email.contains("@") || !email.contains(".") {
+            errorMessage.append("Please enter a valid email address")
+            validEntry = false
         }
         
-         if !confirmPassword.trimmingCharacters(in: .whitespaces).isEmpty {
-//             errorMessage.append("Please confirm your password")
-//             validEntry = false
-         } else if confirmPassword.count >= 6 {
-//             errorMessage.append("Please confirm your password")
-//             validEntry = false
-         }
-         
+        if !password.trimmingCharacters(in: .whitespaces).isEmpty {
+            //             errorMessage.append("Please enter a password")
+            //             validEntry = false
+        } else if password.count >= 6 {
+            //                 errorMessage.append("Please enter a password")
+            //                 validEntry = false
+        }
+        
+        if !confirmPassword.trimmingCharacters(in: .whitespaces).isEmpty {
+            //             errorMessage.append("Please confirm your password")
+            //             validEntry = false
+        } else if confirmPassword.count >= 6 {
+            //             errorMessage.append("Please confirm your password")
+            //             validEntry = false
+        }
+        
         print("Validate attempted")
-         return validEntry
+        return validEntry
         
     }
     
