@@ -13,7 +13,6 @@ struct RegistrationView: View {
     @State private var isRegistrationSuccessful: Bool = false
     @State private var errorMessage: String = ""
     
-    
     var body: some View {
         NavigationStack {
             VStack {
@@ -29,17 +28,11 @@ struct RegistrationView: View {
                     TextField("Username", text: $registrationViewModel.name)
                         .autocorrectionDisabled(true)
                         .keyboardType(.asciiCapable)
-                        .onChange(of: registrationViewModel.name) { _ in
-                            registrationViewModel.clearErrorMessage()
-                        }
                     
                     TextField("Email Address", text: $registrationViewModel.email)
                         .autocorrectionDisabled(true)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
-                        .onChange(of: registrationViewModel.email) { _ in
-                            registrationViewModel.clearErrorMessage()
-                        }
                     
                     SecureField("Password", text: $registrationViewModel.password)
                         .autocorrectionDisabled(true)
@@ -50,31 +43,16 @@ struct RegistrationView: View {
                         .keyboardType(.asciiCapable)
                 }
                 .scrollContentBackground(.hidden)
-                NavigationLink(destination: MainView(), isActive: $isRegistrationSuccessful){
-                    EmptyView()
-                }
+                
                 CustomButton(
                     title: "Create Account",
                     backgroundColor: .green,
                     textColor: .white) {
                         registrationViewModel.register()
-//                        if !registrationViewModel.isRegistering {
-//                            registrationViewModel.register() { success in
-//                                if success {
-//                                    isRegistrationSuccessful = true
-//                                } else {
-//                                    isRegistrationSuccessful = false
-//                                }
-//                            }
-//                        }
                     }
                     .padding()
             }
             .offset(y: -100)
-//            .background(
-//                NavigationLink("", destination: MainView())
-//                    .opacity(isRegistrationSuccessful ? 1 : 0)
-//            )
         }
     }
 }

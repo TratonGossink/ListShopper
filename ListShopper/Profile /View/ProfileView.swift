@@ -14,6 +14,12 @@ struct ProfileView: View {
     @State private var showAlert: Bool = false
     @State private var isLoggedOut: Bool = false
     @State private var showImagePicker: Bool = false
+    @State private var alertType: AlertType = .none
+    
+    enum AlertType {
+        case none, logoutConfirmation, loggedOut
+        case logout
+    }
     
     var body: some View {
         NavigationStack {
@@ -22,7 +28,8 @@ struct ProfileView: View {
                     ProfileHeaderView(user: userInfo, showImagePicker: $showImagePicker, profileViewModel: profileViewModel)
                     UserInfoView(user: userInfo)
                     Spacer()
-                    ProfileButtonsView(showAlert: $showAlert)
+                    ProfileButtonView(showAlert: $showAlert)
+                    Spacer()
                 } else {
                     Text("Profile Loading...")
                 }
@@ -32,12 +39,7 @@ struct ProfileView: View {
         .onAppear {
             profileViewModel.fetchUser()
         }
-        .alert("Are you sure you \n want to log out?", isPresented: $showAlert) {
-            Button("Log Out", role: .destructive) {
-                profileViewModel.logOut()
-            }
-            Button("Cancel", role: .cancel) {}
-        }
+
         .alert("You have been logged out.", isPresented: $isLoggedOut) {
             Button("OK", role: .cancel) {}
         }
