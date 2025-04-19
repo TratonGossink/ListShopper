@@ -13,7 +13,6 @@ class LogInViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var errorMessage: String = ""
-//    @Published private var isErrorVisible: Bool = false
     
     init() {}
     
