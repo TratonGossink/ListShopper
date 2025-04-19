@@ -42,7 +42,6 @@ struct LogInView: View {
                              backgroundColor: .blue,
                              textColor: .white) {
                     logInViewModel.logIn()
-                    MainView()
                 }
                              .padding()
                 ///Account creation
