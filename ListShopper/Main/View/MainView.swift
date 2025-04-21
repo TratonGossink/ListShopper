@@ -23,7 +23,7 @@ struct MainView: View {
     @ViewBuilder
     var accountView: some View {
         TabView {
-            ShoppingListView(itemId: viewModel.currentUserId)
+            ShoppingListView(userId: viewModel.currentUserId)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }

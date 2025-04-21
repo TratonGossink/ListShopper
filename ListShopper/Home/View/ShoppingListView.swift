@@ -10,17 +10,12 @@ import FirebaseFirestore
 
 struct ShoppingListView: View {
     
-    
-    //    @ObservedObject var listItemViewModel = ListItemViewModel()
     @ObservedObject var listItemViewModel = ListItemViewModel()
     @FirestoreQuery var items: [ListItem]
     @State private var editPresented = false
-    //    private let userId: String
     
-    init(itemId: String) {
-        //        self.userId = userId
-        self._items = FirestoreQuery(collectionPath: "itemList/\(itemId)/listItems")
-//    self._listItemViewModel = StateObject(wrappedValue: ListItemViewModel(userId: userId))
+    init(userId: String) {
+        self._items = FirestoreQuery(collectionPath: "users/\(userId)/listItems")
 }
     
     var body: some View {
@@ -79,5 +74,5 @@ struct ShoppingListView: View {
 
 
 #Preview {
-    ShoppingListView(itemId: "nrHQT5nXSKUqRbtfZ0xbiJRlg1f2")
+    ShoppingListView(userId: "nrHQT5nXSKUqRbtfZ0xbiJRlg1f2")
 }

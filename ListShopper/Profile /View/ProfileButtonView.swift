@@ -29,8 +29,9 @@ struct ProfileButtonView: View {
             case .logoutConfirmation:
                 return Alert(title: Text("Are you sure you \n want to log out?"), primaryButton: .destructive(Text("Log Out")){
                     profileViewModel.logOut()
-                    alertType = .loggedOut
                     showAlert = true
+                    alertType = .loggedOut
+                    
                 },
                     secondaryButton: .cancel()
                 )

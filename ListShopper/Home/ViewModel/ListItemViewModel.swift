@@ -19,6 +19,7 @@ class ListItemViewModel: ObservableObject {
     @Published var selectedItem: ListItem!
     
     var id: String
+    let itemUUID = UUID().uuidString
     
     init(listItem: ListItem? = nil) {
         if let listItem = listItem {
@@ -47,7 +48,7 @@ class ListItemViewModel: ObservableObject {
             isComplete: false)
         
         let db = Firestore.firestore()
-            db.collection("itemList")
+            db.collection("users")
                 .document(userId)
                 .collection("listItems")
                 .document(itemUUID)
@@ -64,15 +65,15 @@ class ListItemViewModel: ObservableObject {
     func deleteItem() {
         let db = Firestore.firestore()
         
-        guard let itemId = Auth.auth().currentUser?.uid else {
+        guard let userId = Auth.auth().currentUser?.uid else {
                  print(#function, "Could not get user ID")
                  return
              }
         
-        db.collection("itemList")
-            .document(itemId)
+        db.collection("users")
+            .document(userId)
             .collection("listItems")
-            .document(id)
+            .document(itemUUID)
             .delete() {
                 error in
                 if let error = error {

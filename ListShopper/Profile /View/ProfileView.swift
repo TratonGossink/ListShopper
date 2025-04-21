@@ -14,12 +14,6 @@ struct ProfileView: View {
     @State private var showAlert: Bool = false
     @State private var isLoggedOut: Bool = false
     @State private var showImagePicker: Bool = false
-    @State private var alertType: AlertType = .none
-    
-    enum AlertType {
-        case none, logoutConfirmation, loggedOut
-        case logout
-    }
     
     var body: some View {
         NavigationStack {
@@ -39,7 +33,6 @@ struct ProfileView: View {
         .onAppear {
             profileViewModel.fetchUser()
         }
-
         .alert("You have been logged out.", isPresented: $isLoggedOut) {
             Button("OK", role: .cancel) {}
         }
