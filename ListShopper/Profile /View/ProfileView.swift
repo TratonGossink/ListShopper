@@ -33,9 +33,6 @@ struct ProfileView: View {
         .onAppear {
             profileViewModel.fetchUser()
         }
-        .alert("You have been logged out.", isPresented: $isLoggedOut) {
-            Button("OK", role: .cancel) {}
-        }
     }
 }
 

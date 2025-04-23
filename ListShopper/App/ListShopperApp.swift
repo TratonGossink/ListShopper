@@ -17,7 +17,6 @@ struct ListShopperApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            LogInView()
             MainView()
                 .environmentObject(settingsViewModel)
                 .preferredColorScheme(settingsViewModel.isDarkMode ? .dark : .light)

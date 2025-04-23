@@ -33,8 +33,10 @@ struct ShoppingListView: View {
                             }
                             .tint(.gray)
                         }
-                        .sheet(isPresented: $editPresented) {
+                        .sheet(isPresented: $listItemViewModel.isSheetPresented) {
                             ListItemView(isSheetPresented: $listItemViewModel.isSheetPresented)
+//                            listItemViewModel.editListItem
+//                            }
                         }
                 }
                 .listStyle(PlainListStyle())
@@ -61,15 +63,25 @@ struct ShoppingListView: View {
     
     func deleteItem(_ item: ListItem) {
         let viewModel = ListItemViewModel(listItem: item)
-        viewModel.deleteItem()
+        viewModel.deleteListItem()
     }
     
+//    func editItem(_ item: ListItem) {
+//        //        let viewModel = ListItemViewModel(listItem: item)
+//        //        viewModel.isSheetPresented = true
+//        listItemViewModel.title = item.title
+//           listItemViewModel.dueDate = Date(timeIntervalSince1970: item.dueDate)
+//           listItemViewModel.itemId = UUID(uuidString: item.id)
+////        let editSheet = ListItemView(isSheetPresented: $editPresented)
+////        editSheet.isSheetPresented = true
+//        editPresented = true
+//    }
     func editItem(_ item: ListItem) {
-        //        let viewModel = ListItemViewModel(listItem: item)
-        //        viewModel.isSheetPresented = true
-        let editSheet = ListItemView(isSheetPresented: $editPresented)
-        editSheet.isSheetPresented = true
+        listItemViewModel.isSheetPresented = true
+        let viewModel = ListItemViewModel(listItem: item)
+        viewModel.editListItem()
     }
+    
 }
 
 

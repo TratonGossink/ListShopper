@@ -12,7 +12,6 @@ struct ListItemView: View {
     @StateObject var listItemViewModel = ListItemViewModel()
     @Environment(\.dismiss) var dismiss
     @Binding var isSheetPresented: Bool
-//    @State var listItem: ListItem
     var isEditing: Bool = false
     
     var body: some View {
@@ -21,7 +20,7 @@ struct ListItemView: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 50, height: 5)
                     .padding(.top, 25)
-            if listItemViewModel.id != UUID().uuidString {
+            if listItemViewModel.itemUUID != UUID().uuidString {
                 Text("New Item")
                     .font(.system(size: 32, weight: .bold))
             } else {

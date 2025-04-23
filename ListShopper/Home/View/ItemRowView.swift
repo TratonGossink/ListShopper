@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 struct ItemRowView: View {
     
-    var item: ListItem
+    var item: ListItem 
     @State private var showSheet: Bool = false
     @ObservedObject var listItemViewModel = ListItemViewModel()
     
@@ -33,7 +33,7 @@ struct ItemRowView: View {
             }
         }
     }
-    }
+}
 
 #Preview {
     ItemRowView(item: ListItem(id: "sampleId", title: "Sample Title", dueDate: Date().timeIntervalSinceReferenceDate, createdDate: Date().timeIntervalSinceReferenceDate, isComplete: false), listItemViewModel: ListItemViewModel())
