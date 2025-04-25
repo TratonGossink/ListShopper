@@ -20,7 +20,7 @@ struct ItemRowView: View {
                 Text(item.title)
                     .font(.headline)
                     .bold()
-                Text("\(Date(timeIntervalSinceReferenceDate: item.dueDate).formatted(date: .abbreviated, time: .shortened))")
+                Text("\(Date(timeIntervalSince1970: item.dueDate).formatted(date: .abbreviated, time: .shortened))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

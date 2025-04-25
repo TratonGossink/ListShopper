@@ -14,6 +14,7 @@ class ListItemViewModel: ObservableObject {
     @Published var itemId: UUID?
     @Published var title: String = ""
     @Published var dueDate: Date = Date()
+    @Published var createdDate: Date = Date()
     @Published var showAlert: Bool = false
     
     var id: String
@@ -23,6 +24,7 @@ class ListItemViewModel: ObservableObject {
         if let listItem = listItem {
             self.title = listItem.title
 //            self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
+//            self.createdDate = Date(timeIntervalSince1970: listItem.createdDate)
             self.id = itemUUID
         } else {
             self.id = UUID().uuidString
@@ -40,8 +42,8 @@ class ListItemViewModel: ObservableObject {
         let itemData = ListItem(
             id: itemUUID,
             title: title,
-            dueDate: dueDate.timeIntervalSince1970,
-            createdDate: Date().timeIntervalSince1970,
+            dueDate: Date().timeIntervalSince1970,
+            createdDate: createdDate.timeIntervalSince1970,
             isComplete: false)
         
         let db = Firestore.firestore()

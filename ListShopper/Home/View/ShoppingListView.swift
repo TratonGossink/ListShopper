@@ -38,7 +38,12 @@ struct ShoppingListView: View {
                             .tint(.gray)
                         }
                         .sheet(isPresented: $isSheetPresented) {
-                            ListItemView(isSheetPresented: $isSheetPresented)
+//                            ListItemView(isSheetPresented: $isSheetPresented)
+                            ListItemView(
+                                    listItemViewModel: ListItemViewModel(listItem: selectedItem),
+                                    isSheetPresented: $isSheetPresented,
+                                    isEditing: selectedItem != nil
+                                )
                         }
                 }
                 .listStyle(PlainListStyle())
