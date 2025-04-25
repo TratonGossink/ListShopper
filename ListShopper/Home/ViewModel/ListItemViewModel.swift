@@ -15,7 +15,6 @@ class ListItemViewModel: ObservableObject {
     @Published var title: String = ""
     @Published var dueDate: Date = Date()
     @Published var showAlert: Bool = false
-    @Published var isSheetPresented: Bool = false
     
     var id: String
     let itemUUID = UUID().uuidString
@@ -23,7 +22,7 @@ class ListItemViewModel: ObservableObject {
     init(listItem: ListItem? = nil) {
         if let listItem = listItem {
             self.title = listItem.title
-            self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
+//            self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
             self.id = itemUUID
         } else {
             self.id = UUID().uuidString
@@ -59,35 +58,6 @@ class ListItemViewModel: ObservableObject {
             print(#function, "Could not convert to dictionary")
         print("Item as dictionary: \(itemData.asDictionary())")
         }
-
-    func deleteListItem() {
-        let db = Firestore.firestore()
-        
-        let itemData = ListItem(
-            id: itemUUID,
-            title: title,
-            dueDate: dueDate.timeIntervalSince1970,
-            createdDate: Date().timeIntervalSince1970,
-            isComplete: false)
-        
-        guard let userId = Auth.auth().currentUser?.uid else {
-                 print(#function, "Could not get user ID")
-                 return
-             }
-        
-        db.collection("users")
-            .document(userId)
-            .collection("listItems")
-            .document(itemUUID)
-            .delete() {
-                error in
-                if let error = error {
-                    print("Error deleting document: \(error.localizedDescription)")
-                } else {
-                    print("Item successfully deleted")
-                }
-            }
-    }
     
     func editListItem() {
             guard self.canSave else { return }
@@ -132,7 +102,6 @@ class ListItemViewModel: ObservableObject {
     }
     
     func toggleIsComplete(item: ListItem) {
-//        item.toggleComplete(true)
         
     }
 }

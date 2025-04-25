@@ -38,6 +38,7 @@ struct ListItemView: View {
             .border(Color.gray.opacity(0.5), width: 1)
             .cornerRadius(8)
             .padding()
+            
             CustomButton(title: "Save", backgroundColor: .blue, textColor: .white) {
                 if listItemViewModel.canSave {
                     listItemViewModel.save()
