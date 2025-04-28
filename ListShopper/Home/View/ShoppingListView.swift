@@ -36,7 +36,7 @@ struct ShoppingListView: View {
                                 .tint(.red)
                                 Button("Edit") {
                                     selectedItem = item
-                                    isSheetPresented = true
+//                                    isSheetPresented = true
                                 }
                                 .tint(.gray)
                             }
@@ -49,7 +49,7 @@ struct ShoppingListView: View {
                         Spacer()
                         ToastView(message: toastMessage)
                             .transition(.move(edge: .bottom))
-                            .padding(.bottom, 50)
+                            .padding(.bottom, 100)
                     }
                     .zIndex(1)
                 }
@@ -57,14 +57,18 @@ struct ShoppingListView: View {
             .navigationTitle(Text("Shopping List"))
             .toolbar {
                 Button {
-                    selectedItem = nil
-                    isSheetPresented = true
+                    selectedItem = ListItem(
+                        id: UUID().uuidString,
+                        title: "",
+                        dueDate: Date().timeIntervalSince1970,
+                        createdDate: Date().timeIntervalSince1970,
+                        isComplete: false)
                 } label: {
                     Image(systemName: "plus")
                 }
             }
-            .sheet(isPresented: $isSheetPresented) {
-                ListItemView(selectedItem: selectedItem)
+            .sheet(item: $selectedItem) { item in
+                ListItemView(selectedItem: item)
             }
         }
     }

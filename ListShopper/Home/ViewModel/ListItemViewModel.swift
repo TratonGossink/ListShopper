@@ -25,7 +25,7 @@ class ListItemViewModel: ObservableObject {
             self.title = listItem.title
             self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
             self.id = listItem.id
-            self.isEditing = true
+            self.isEditing = !listItem.title.isEmpty
         } else {
             self.id = UUID().uuidString
             self.isEditing = false
