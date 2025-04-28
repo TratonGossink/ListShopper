@@ -14,6 +14,8 @@ struct ShoppingListView: View {
     @FirestoreQuery var items: [ListItem]
     @State private var isSheetPresented = false
     @State private var selectedItem: ListItem? = nil
+    @State private var showToast = false
+    @State private var toastMessage = ""
     
     init(userId: String) {
         self._items = FirestoreQuery(collectionPath: "users/\(userId)/listItems")
@@ -21,22 +23,36 @@ struct ShoppingListView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                List(items) { item in
-                    ItemRowView(item: item)
-                        .swipeActions {
-                            Button("Delete") {
-                                deleteItem(item)
+            ZStack {
+                VStack {
+                    List(items) { item in
+                        ItemRowView(item: item)
+                            .swipeActions {
+                                Button("Delete") {
+                                    withAnimation {
+                                        deleteItem(item)
+                                    }
+                                }
+                                .tint(.red)
+                                Button("Edit") {
+                                    selectedItem = item
+                                    isSheetPresented = true
+                                }
+                                .tint(.gray)
                             }
-                            .tint(.red)
-                            Button("Edit") {
-                                selectedItem = item
-                                isSheetPresented = true
-                            }
-                            .tint(.gray)
-                        }
+                    }
+                    .listStyle(PlainListStyle())
+                    .animation(.default, value: items)
                 }
-                .listStyle(PlainListStyle())
+                if showToast {
+                    VStack {
+                        Spacer()
+                        ToastView(message: toastMessage)
+                            .transition(.move(edge: .bottom))
+                            .padding(.bottom, 50)
+                    }
+                    .zIndex(1)
+                }
             }
             .navigationTitle(Text("Shopping List"))
             .toolbar {
@@ -48,7 +64,7 @@ struct ShoppingListView: View {
                 }
             }
             .sheet(isPresented: $isSheetPresented) {
-                ListItemView(selectedItem: selectedItem, isEditing: selectedItem != nil)
+                ListItemView(selectedItem: selectedItem)
             }
         }
     }
@@ -65,7 +81,7 @@ struct ShoppingListView: View {
             print(#function, "Could not get user ID")
             return }
         Firestore.firestore()
-        .collection("users")
+            .collection("users")
             .document(userId)
             .collection("listItems")
             .document(item.id)
@@ -75,8 +91,21 @@ struct ShoppingListView: View {
                     print("Error deleting document: \(error.localizedDescription)")
                 } else {
                     print("Item successfully deleted")
+                    showToast(message: "Item deleted")
                 }
             }
+    }
+    
+    func showToast(message: String) {
+        toastMessage = message
+        withAnimation {
+            showToast = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            withAnimation {
+                showToast = false
+            }
+        }
     }
 }
 
