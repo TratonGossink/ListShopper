@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct ListItemView: View {
     
-    @StateObject var listItemViewModel = ListItemViewModel()
+    @StateObject var listItemViewModel: ListItemViewModel
     @Environment(\.dismiss) var dismiss
-    @Binding var isSheetPresented: Bool
-    var isEditing: Bool = false
+    
+    init(selectedItem: ListItem? = nil, isEditing: Bool = false) {
+        _listItemViewModel = StateObject(wrappedValue: ListItemViewModel(listItem: selectedItem))
+    }
     
     var body: some View {
         VStack {
@@ -20,11 +23,11 @@ struct ListItemView: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 50, height: 5)
                     .padding(.top, 25)
-            if listItemViewModel.itemUUID != UUID().uuidString {
-                Text("New Item")
+            if listItemViewModel.isEditing {
+                Text("Update Item")
                     .font(.system(size: 32, weight: .bold))
             } else {
-                Text("Update Item")
+                Text("New Item")
                     .font(.system(size: 32, weight: .bold))
             }
             
@@ -57,5 +60,5 @@ struct ListItemView: View {
 }
 
 #Preview {
-    ListItemView(listItemViewModel: ListItemViewModel(), isSheetPresented: .constant(false))
+    ListItemView()
 }

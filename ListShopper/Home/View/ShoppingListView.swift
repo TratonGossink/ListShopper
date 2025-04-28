@@ -11,15 +11,13 @@ import FirebaseAuth
 
 struct ShoppingListView: View {
     
-    @ObservedObject var listItemViewModel = ListItemViewModel()
     @FirestoreQuery var items: [ListItem]
-    @State private var editPresented = false
     @State private var isSheetPresented = false
     @State private var selectedItem: ListItem? = nil
     
     init(userId: String) {
         self._items = FirestoreQuery(collectionPath: "users/\(userId)/listItems")
-}
+    }
     
     var body: some View {
         NavigationStack {
@@ -37,14 +35,6 @@ struct ShoppingListView: View {
                             }
                             .tint(.gray)
                         }
-                        .sheet(isPresented: $isSheetPresented) {
-//                            ListItemView(isSheetPresented: $isSheetPresented)
-                            ListItemView(
-                                    listItemViewModel: ListItemViewModel(listItem: selectedItem),
-                                    isSheetPresented: $isSheetPresented,
-                                    isEditing: selectedItem != nil
-                                )
-                        }
                 }
                 .listStyle(PlainListStyle())
             }
@@ -58,10 +48,11 @@ struct ShoppingListView: View {
                 }
             }
             .sheet(isPresented: $isSheetPresented) {
-                ListItemView(isSheetPresented: $isSheetPresented)
+                ListItemView(selectedItem: selectedItem, isEditing: selectedItem != nil)
             }
         }
     }
+    
     func deleteItems(at offsets: IndexSet) {
         for index in offsets {
             let item = items[index]
@@ -70,14 +61,11 @@ struct ShoppingListView: View {
     }
     
     func deleteItem(_ item: ListItem) {
-        let db = Firestore.firestore()
-        
         guard let userId = Auth.auth().currentUser?.uid else {
-                 print(#function, "Could not get user ID")
-                 return
-             }
-        
-        db.collection("users")
+            print(#function, "Could not get user ID")
+            return }
+        Firestore.firestore()
+        .collection("users")
             .document(userId)
             .collection("listItems")
             .document(item.id)
@@ -90,12 +78,6 @@ struct ShoppingListView: View {
                 }
             }
     }
-    
-    func editItem(_ item: ListItem) {
-        isSheetPresented = true
-        let viewModel = ListItemViewModel(listItem: item)
-        viewModel.editListItem()
-    }    
 }
 
 #Preview {
