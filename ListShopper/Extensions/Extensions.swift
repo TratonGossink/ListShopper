@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Encodable {
     
@@ -21,7 +22,7 @@ extension Encodable {
         }
     }
 }
-    
+
 //    extension TabBarView {
 //        func CustomTabItem(imageName: String, title: String, isActive: Bool) -> some View{
 //            HStack(alignment: .center,spacing: 22){
@@ -31,6 +32,7 @@ extension Encodable {
 //                    .renderingMode(.template)
 //                    .foregroundColor(isActive ? .purple : .gray)
 //                    .frame(width: 25, height: 25)
+
 //                Spacer()
 //            }
 //        }
