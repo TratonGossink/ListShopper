@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseAuth
+import UIKit
 
 class ListItemViewModel: ObservableObject {
     
@@ -24,14 +25,14 @@ class ListItemViewModel: ObservableObject {
             self.title = listItem.title
             self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
             self.id = listItem.id
-            self.isEditing = true
+            self.isEditing = !listItem.title.isEmpty
         } else {
             self.id = UUID().uuidString
             self.isEditing = false
         }
     }
     
-    func save() {
+    func saveOrUpdate() {
         guard self.canSave else { return }
         
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -78,6 +79,9 @@ class ListItemViewModel: ObservableObject {
                     self.showAlert = true
                 } else {
                     print(#function, "Item complete, toggled successfully.")
+                    
+                    let generator = UINotificationFeedbackGenerator()
+                    generator.notificationOccurred(.success)
                 }
             }
     }
@@ -92,5 +96,12 @@ class ListItemViewModel: ObservableObject {
             return false
         }
         return true
+    }
+    
+    func updateFromListItem(_ listItem: ListItem) {
+        self.title = listItem.title
+        self.dueDate = Date(timeIntervalSince1970: listItem.dueDate)
+        self.id = listItem.id
+        self.isEditing = true
     }
 }

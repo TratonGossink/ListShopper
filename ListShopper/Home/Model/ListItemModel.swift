@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import FirebaseFirestore
 
-struct ListItem: Identifiable, Codable {
+struct ListItem: Identifiable, Codable, Equatable {
     var id: String = UUID().uuidString
     let title: String
     let dueDate: TimeInterval

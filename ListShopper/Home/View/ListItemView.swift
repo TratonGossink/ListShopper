@@ -12,25 +12,21 @@ struct ListItemView: View {
     
     @StateObject var listItemViewModel: ListItemViewModel
     @Environment(\.dismiss) var dismiss
+//    var selectedItem: ListItem?
     
-    init(selectedItem: ListItem? = nil, isEditing: Bool = false) {
+    init(selectedItem: ListItem) {
         _listItemViewModel = StateObject(wrappedValue: ListItemViewModel(listItem: selectedItem))
     }
     
     var body: some View {
         VStack {
-                Capsule()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 50, height: 5)
-                    .padding(.top, 25)
-            if listItemViewModel.isEditing {
-                Text("Update Item")
-                    .font(.system(size: 32, weight: .bold))
-            } else {
-                Text("New Item")
-                    .font(.system(size: 32, weight: .bold))
-            }
-            
+            Capsule()
+                .fill(Color.gray.opacity(0.5))
+                .frame(width: 50, height: 5)
+                .padding(.top, 25)
+            Text(listItemViewModel.isEditing ? "Update Item" : "New Item")
+                .font(.system(size: 32, weight: .bold))
+                
             Form {
                 TextField("Title", text: $listItemViewModel.title)
                 
@@ -43,12 +39,8 @@ struct ListItemView: View {
             .padding()
             
             CustomButton(title: "Save", backgroundColor: .blue, textColor: .white) {
-                if listItemViewModel.canSave {
-                    listItemViewModel.save()
-                    dismiss()
-                } else {
-                    listItemViewModel.showAlert = true
-                }
+                listItemViewModel.saveOrUpdate()
+                dismiss()
             }
             .padding(.bottom, 35)
         }
@@ -60,5 +52,10 @@ struct ListItemView: View {
 }
 
 #Preview {
-    ListItemView()
-}
+    ListItemView(selectedItem: ListItem(
+        id: UUID().uuidString,
+        title: "",
+        dueDate: Date().timeIntervalSince1970,
+        createdDate: Date().timeIntervalSince1970,
+        isComplete: false
+    ))}
