@@ -19,6 +19,7 @@ struct ToastView: View {
             .foregroundStyle(.white)
             .cornerRadius(10)
             .padding(.horizontal, 40)
+            .opacity(0.95)
     }
 }
 

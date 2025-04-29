@@ -36,7 +36,6 @@ struct ShoppingListView: View {
                                 .tint(.red)
                                 Button("Edit") {
                                     selectedItem = item
-//                                    isSheetPresented = true
                                 }
                                 .tint(.gray)
                             }
@@ -48,7 +47,7 @@ struct ShoppingListView: View {
                     VStack {
                         Spacer()
                         ToastView(message: toastMessage)
-                            .transition(.move(edge: .bottom))
+                            .transition(.opacity.combined(with: .move(edge: .bottom)))
                             .padding(.bottom, 100)
                     }
                     .zIndex(1)

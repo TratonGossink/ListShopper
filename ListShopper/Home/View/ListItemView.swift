@@ -24,13 +24,6 @@ struct ListItemView: View {
                 .fill(Color.gray.opacity(0.5))
                 .frame(width: 50, height: 5)
                 .padding(.top, 25)
-//            if listItemViewModel.isEditing {
-//                Text("Update Item")
-//                    .font(.system(size: 32, weight: .bold))
-//            } else {
-//                Text("New Item")
-//                    .font(.system(size: 32, weight: .bold))
-//            }
             Text(listItemViewModel.isEditing ? "Update Item" : "New Item")
                 .font(.system(size: 32, weight: .bold))
                 
@@ -51,11 +44,6 @@ struct ListItemView: View {
             }
             .padding(.bottom, 35)
         }
-//        .onAppear {
-//            if let selectedItem = selectedItem {
-//                listItemViewModel.updateFromListItem(selectedItem)
-//            }
-//        }
         .alert(isPresented: $listItemViewModel.showAlert) {
             .init(title: Text("Error"),
                   message: Text("Please enter a title and due date."))

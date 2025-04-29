@@ -13,6 +13,7 @@ struct ItemRowView: View {
     var item: ListItem 
     @State private var showSheet: Bool = false
     @ObservedObject var listItemViewModel = ListItemViewModel()
+    @State private var animateCheckmark = false
     
     var body: some View {
         HStack {
@@ -27,9 +28,16 @@ struct ItemRowView: View {
             Spacer()
             
             Button {
-                listItemViewModel.toggleIsComplete(item: item)
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                    listItemViewModel.toggleIsComplete(item: item)
+                    animateCheckmark.toggle()
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    animateCheckmark = false
+                }
             } label: {
                 Image(systemName: item.isComplete ? "checkmark.circle.fill" :"circle")
+                    .scaleEffect(animateCheckmark ? 1.3 : 1.0)
             }
         }
     }
