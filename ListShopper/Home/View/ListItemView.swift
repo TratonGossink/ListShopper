@@ -12,10 +12,12 @@ struct ListItemView: View {
     
     @StateObject var listItemViewModel: ListItemViewModel
     @Environment(\.dismiss) var dismiss
-//    var selectedItem: ListItem?
+
+    let onSave: () -> Void
     
-    init(selectedItem: ListItem) {
+    init(selectedItem: ListItem, onSave: @escaping () -> Void = {}) {
         _listItemViewModel = StateObject(wrappedValue: ListItemViewModel(listItem: selectedItem))
+        self.onSave = onSave
     }
     
     var body: some View {
@@ -40,6 +42,7 @@ struct ListItemView: View {
             
             CustomButton(title: "Save", backgroundColor: .blue, textColor: .white) {
                 listItemViewModel.saveOrUpdate()
+                onSave()
                 dismiss()
             }
             .padding(.bottom, 35)

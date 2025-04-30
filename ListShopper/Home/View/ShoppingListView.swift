@@ -67,7 +67,9 @@ struct ShoppingListView: View {
                 }
             }
             .sheet(item: $selectedItem) { item in
-                ListItemView(selectedItem: item)
+                ListItemView(selectedItem: item) {
+                    showToast(message: item.title.isEmpty ? "Item added!" : "Item updated!")
+                }
             }
         }
     }

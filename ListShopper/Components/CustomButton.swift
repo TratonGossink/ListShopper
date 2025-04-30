@@ -17,7 +17,6 @@ struct CustomButton: View {
     var body: some View {
         Button {
             action()
-            print("Button Pressed")
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)

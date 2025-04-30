@@ -19,7 +19,7 @@ class ListItemViewModel: ObservableObject {
     
     var id: String
     var isEditing: Bool
-
+    
     init(listItem: ListItem? = nil) {
         if let listItem = listItem {
             self.title = listItem.title
@@ -47,20 +47,20 @@ class ListItemViewModel: ObservableObject {
             createdDate: Date().timeIntervalSince1970,
             isComplete: false)
         
-            Firestore.firestore()
+        Firestore.firestore()
             .collection("users")
-                .document(userId)
-                .collection("listItems")
-                .document(id)
-                .setData(itemData.asDictionary()) { error in
-                    if let error = error {
-                        print(#function, "Error saving/updating data: \(error)")
-                        self.showAlert = true
-                    }
+            .document(userId)
+            .collection("listItems")
+            .document(id)
+            .setData(itemData.asDictionary()) { error in
+                if let error = error {
+                    print(#function, "Error saving/updating data: \(error)")
+                    self.showAlert = true
+                    print(#function, "Could not convert to dictionary")
+                    print("Item as dictionary: \(itemData.asDictionary())")
                 }
-            print(#function, "Could not convert to dictionary")
-        print("Item as dictionary: \(itemData.asDictionary())")
-        }
+            }
+    }
     
     func toggleIsComplete(item: ListItem) {
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -78,7 +78,7 @@ class ListItemViewModel: ObservableObject {
                     print(#function, "Error saving/updating data: \(error)")
                     self.showAlert = true
                 } else {
-                    print(#function, "Item complete, toggled successfully.")
+//                    print(#function, "Item complete, toggled successfully.")
                     
                     let generator = UINotificationFeedbackGenerator()
                     generator.notificationOccurred(.success)
